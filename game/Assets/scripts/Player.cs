@@ -9,7 +9,7 @@ public class Player : MonoBehaviour
     Vector2 _prevMouse;
     
 
-    // Public members
+    // Accessors
 
     // Events
     public delegate void ShotEventListener(Vector2 mouseChange);
@@ -54,7 +54,14 @@ public class Player : MonoBehaviour
         RaycastHit hit;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out hit))
-            _ball = hit.transform.GetComponent<Ball>();
+        {
+            Ball ball = hit.transform.GetComponent<Ball>();
+            if (ball.Grabbable)
+            {
+                ball.DisableGrab();
+                _ball = ball;
+            }
+        }
     }
 
     void GetInput()

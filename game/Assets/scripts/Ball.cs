@@ -5,11 +5,16 @@ using UnityEngine;
 public class Ball : MonoBehaviour
 {
     // Private members
+    float _forceScale;
+    bool _grabbable;
     Rigidbody _rigidbody;
     bool _useGravity;
-    float _forceScale;
 
-    // Public members
+    // Accessors
+    public bool Grabbable
+    {
+        get { return _grabbable; }
+    }
 
     // Events
     public delegate void BallDeadEventListener();
@@ -20,6 +25,7 @@ public class Ball : MonoBehaviour
     {
         name = "Ball";
         InitPhysics();
+        _grabbable = true;
 	}
 	
 	// Update is called once per frame
@@ -28,6 +34,12 @@ public class Ball : MonoBehaviour
         if (transform.position.y < -5 && BallDeadEvent != null)
             BallDeadEvent();
 	}
+
+    public void DisableGrab()
+    {
+        if (_grabbable)
+            _grabbable = false;
+    }
 
     void InitPhysics()
     {
