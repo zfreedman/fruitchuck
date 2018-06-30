@@ -9,6 +9,12 @@ public class Ball : MonoBehaviour
     bool _useGravity;
     float _forceScale;
 
+    // Public members
+
+    // Events
+    public delegate void BallDeadEventListener();
+    public static event BallDeadEventListener BallDeadEvent;
+
 	// Use this for initialization
 	void Start ()
     {
@@ -19,7 +25,8 @@ public class Ball : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
     {
-		
+        if (transform.position.y < -10 && BallDeadEvent != null)
+            BallDeadEvent();
 	}
 
     void AddPhysics()

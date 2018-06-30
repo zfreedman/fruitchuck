@@ -12,6 +12,7 @@ public class Game : MonoBehaviour
 	// Use this for initialization
 	void Start ()
     {
+        AddEventListeners();
         InitPhysics();
         InitPlayer();
         InitGoal();
@@ -23,6 +24,24 @@ public class Game : MonoBehaviour
     {
 		
 	}
+
+    void AddEventListeners()
+    {
+        Ball.BallDeadEvent += HandleBallDeadEvent;
+        Player.ShotEvent += HandleShotEvent;
+    }
+
+    void DestroyOldBall()
+    {
+        if (_ball)
+            Destroy(_ball.gameObject);
+    }
+
+    void HandleBallDeadEvent()
+    {
+        DestroyOldBall();
+        InitBall();
+    }
 
     void HandleShotEvent(Vector2 mouseChange)
     {
@@ -44,7 +63,6 @@ public class Game : MonoBehaviour
     void InitPlayer()
     {
         _player = gameObject.AddComponent<Player>();
-        Player.ShotEvent += HandleShotEvent;
     }
 
     void InitPhysics()
