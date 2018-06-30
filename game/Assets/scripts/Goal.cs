@@ -18,7 +18,7 @@ public class Goal : MonoBehaviour
 		
 	}
 
-    private void PlaceGoal()
+    void PlaceGoal()
     {
         transform.position = Vector3.forward * 10;
     }

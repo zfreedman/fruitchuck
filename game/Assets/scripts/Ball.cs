@@ -5,8 +5,8 @@ using UnityEngine;
 public class Ball : MonoBehaviour
 {
     // Private members
-    private Rigidbody _rigidbody;
-    private bool _useGravity;
+    Rigidbody _rigidbody;
+    bool _useGravity;
 
 	// Use this for initialization
 	void Start ()
@@ -20,7 +20,7 @@ public class Ball : MonoBehaviour
 		
 	}
 
-    private void AddPhysics()
+    void AddPhysics()
     {
         _rigidbody = gameObject.AddComponent<Rigidbody>();
         _useGravity = false;
