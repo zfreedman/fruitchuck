@@ -12,6 +12,7 @@ public class Game : MonoBehaviour
 	// Use this for initialization
 	void Start ()
     {
+        InitPhysics();
         InitPlayer();
         InitGoal();
         InitBall();
@@ -26,6 +27,8 @@ public class Game : MonoBehaviour
     void HandleShotEvent(Vector2 mouseChange)
     {
         print(mouseChange);
+        if (_ball)
+            _ball.HandleShotEvent(mouseChange);
     }
 
     void InitBall()
@@ -42,5 +45,10 @@ public class Game : MonoBehaviour
     {
         _player = gameObject.AddComponent<Player>();
         Player.ShotEvent += HandleShotEvent;
+    }
+
+    void InitPhysics()
+    {
+        Physics.gravity = Vector3.down * 15;
     }
 }

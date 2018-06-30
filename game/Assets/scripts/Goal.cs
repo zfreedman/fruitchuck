@@ -10,6 +10,7 @@ public class Goal : MonoBehaviour
 	void Start ()
     {
         name = "Goal";
+        PlaceGoal();
 	}
 	
 	// Update is called once per frame
