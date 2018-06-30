@@ -19,7 +19,7 @@ public class Ball : MonoBehaviour
 	void Start ()
     {
         name = "Ball";
-        AddPhysics();
+        InitPhysics();
 	}
 	
 	// Update is called once per frame
@@ -29,11 +29,10 @@ public class Ball : MonoBehaviour
             BallDeadEvent();
 	}
 
-    void AddPhysics()
+    void InitPhysics()
     {
         _rigidbody = gameObject.AddComponent<Rigidbody>();
-        _useGravity = false;
-        _rigidbody.useGravity = _useGravity;
+        TogglePhysics(false);
 
         _forceScale = 10;
     }
@@ -46,5 +45,16 @@ public class Ball : MonoBehaviour
                 mouseChange.x, mouseChange.y, mouseChange.y
             ) * _forceScale
         );
+    }
+
+    public void TogglePhysics(bool usePhysics)
+    {
+        _useGravity = usePhysics;
+        _rigidbody.useGravity = _useGravity;
+        if (!usePhysics)
+        {
+            _rigidbody.velocity = Vector3.zero;
+            _rigidbody.angularVelocity = Vector3.zero;
+        }
     }
 }

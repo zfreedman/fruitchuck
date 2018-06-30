@@ -5,9 +5,9 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     // Private members
-    Vector2 _mouseDown;
+    Ball _ball;
     Vector2 _prevMouse;
-    Vector2 _mouseUp;
+    
 
     // Public members
 
@@ -24,21 +24,54 @@ public class Player : MonoBehaviour
 	void Update ()
     {
         GetInput();
+        if (_ball)
+            ControlBall();
 	}
+
+    void FixedUpdate()
+    {
+    }
+
+    void ControlBall()
+    {
+        _ball.transform.position = Camera.main.ScreenToWorldPoint(
+            Input.mousePosition + Vector3.forward * 3
+        );
+    }
+
+    void ControlBallStart()
+    {
+        _ball.TogglePhysics(false);
+    }
+
+    void ControlBallStop()
+    {
+        _ball.TogglePhysics(true);
+    }
+
+    void FindBall()
+    {
+        RaycastHit hit;
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if (Physics.Raycast(ray, out hit))
+            _ball = hit.transform.GetComponent<Ball>();
+    }
 
     void GetInput()
     {
         if (Input.GetMouseButtonDown(0))
             HandleMouseDown();
+        else if (Input.GetMouseButtonUp(0))
+            HandleMouseUp();
         else if (Input.GetMouseButton(0))
             HandleMouseHold();
-        if (Input.GetMouseButtonUp(0))
-            HandleMouseUp();
     }
 
     void HandleMouseDown()
     {
-        _mouseDown = Input.mousePosition;
+        FindBall();
+        if (_ball)
+            ControlBallStart();
     }
 
     void HandleMouseHold()
@@ -48,7 +81,17 @@ public class Player : MonoBehaviour
 
     void HandleMouseUp()
     {
-        if (ShotEvent != null)
-            ShotEvent((Vector2)Input.mousePosition - _prevMouse);
+        if (_ball)
+        {
+            ReleaseBall();
+            if (ShotEvent != null)
+                ShotEvent((Vector2)Input.mousePosition - _prevMouse);
+        }
+    }
+
+    void ReleaseBall()
+    {
+        ControlBallStop();
+        _ball = null;
     }
 }
