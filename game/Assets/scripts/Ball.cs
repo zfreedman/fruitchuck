@@ -25,7 +25,7 @@ public class Ball : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
     {
-        if (transform.position.y < -10 && BallDeadEvent != null)
+        if (transform.position.y < -5 && BallDeadEvent != null)
             BallDeadEvent();
 	}
 
@@ -41,6 +41,10 @@ public class Ball : MonoBehaviour
     public void HandleShotEvent(Vector2 mouseChange)
     {
         _rigidbody.useGravity = true;
-        _rigidbody.AddForce(mouseChange * _forceScale);
+        _rigidbody.AddForce(
+            new Vector3(
+                mouseChange.x, mouseChange.y, mouseChange.y
+            ) * _forceScale
+        );
     }
 }

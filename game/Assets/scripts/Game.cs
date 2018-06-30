@@ -67,6 +67,6 @@ public class Game : MonoBehaviour
 
     void InitPhysics()
     {
-        Physics.gravity = Vector3.down * 15;
+        Physics.gravity = Vector3.down * 10;
     }
 }
