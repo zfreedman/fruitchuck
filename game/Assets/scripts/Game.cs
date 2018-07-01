@@ -34,6 +34,7 @@ public class Game : MonoBehaviour
     void AddEventListeners()
     {
         Ball.BallDeadEvent += HandleBallDeadEvent;
+        Goal.BallCollidedWithGoalEvent += HandleBallCollidedWithGoalEvent;
         Player.ShotEvent += HandleShotEvent;
     }
 
@@ -41,6 +42,12 @@ public class Game : MonoBehaviour
     {
         if (_ball)
             Destroy(_ball.gameObject);
+    }
+
+    void HandleBallCollidedWithGoalEvent(Goal goal, Ball ball)
+    {
+        ScoreBall();
+
     }
 
     void HandleBallDeadEvent()
@@ -51,7 +58,6 @@ public class Game : MonoBehaviour
 
     void HandleShotEvent(Vector2 mouseChange)
     {
-        print(mouseChange);
         if (_ball)
             _ball.HandleShotEvent(mouseChange);
     }
@@ -86,5 +92,10 @@ public class Game : MonoBehaviour
     void InitPrefabber()
     {
         _prefabber = gameObject.AddComponent<Prefabber>();
+    }
+
+    void ScoreBall()
+    {
+        HandleBallDeadEvent();
     }
 }

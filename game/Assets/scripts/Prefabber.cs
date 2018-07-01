@@ -41,7 +41,6 @@ public class Prefabber : MonoBehaviour
         foreach (GameObject p in prefabs)
         {
             _map.Add(p.name, p);
-            print(p.name);
         }
     }
 }

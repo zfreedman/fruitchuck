@@ -6,6 +6,10 @@ public class Goal : MonoBehaviour
 {
     // Private members
 
+    // Events
+    public delegate void BallCollidedWithGoalEventListener(Goal goal, Ball ball);
+    public static event BallCollidedWithGoalEventListener BallCollidedWithGoalEvent;
+
 	// Use this for initialization
 	void Start ()
     {
@@ -19,8 +23,30 @@ public class Goal : MonoBehaviour
 		
 	}
 
+    Ball BallFromCollision(Collision collision)
+    {
+        Ball ball = collision.gameObject.GetComponent<Ball>();
+        return ball;
+    }
+
+    void HandleCollisionEnter(Ball ball)
+    {
+        if (ball && BallCollidedWithGoalEvent != null)
+        {
+            BallCollidedWithGoalEvent(this, ball);
+        }
+    }
+
     void PlaceGoal()
     {
         transform.position = Vector3.forward * 10;
     }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        Ball ball = BallFromCollision(collision);
+        HandleCollisionEnter(ball);
+    }
+
+
 }
