@@ -44,6 +44,7 @@ public class Goal : MonoBehaviour
                 BallCollidedWithGoalEvent(this, ball);
             }
             UpdateGoalLife(-1);
+            UpdateGoalMaterial();
         }
     }
 
@@ -59,6 +60,15 @@ public class Goal : MonoBehaviour
         if (_goalLife <= 0)
         {
             ;
+        }
+    }
+
+    void UpdateGoalMaterial()
+    {
+        if (_goalLife <= 0)
+        {
+            Material newMaterial = Materializer.GetMaterial("Dead Goal");
+            gameObject.GetComponent<Renderer>().material = newMaterial;
         }
     }
 }

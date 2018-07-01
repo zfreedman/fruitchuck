@@ -10,7 +10,7 @@ public class GoalMaker : MonoBehaviour
     Dictionary<string, GoalHolder> _holders;
     [SerializeField] int _minTimeBetweenNewGoals = 2;
     [SerializeField] int _maxTimeBetweenNewGoals = 5;
-    [SerializeField] float _timeBetweenNewGoals = 1;
+    [SerializeField] float _timeBetweenNewGoals = .1f;
 
 	void Awake ()
     {

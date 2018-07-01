@@ -59,7 +59,7 @@ public class Game : MonoBehaviour
     {
         GameObject prefab = Prefabber.GetPrefab("Ball");
         _ball = Instantiate<GameObject>(
-            prefab, Vector3.zero, prefab.transform.rotation
+            prefab, Vector3.forward * -5, prefab.transform.rotation
         ).GetComponent<Ball>();
     }
 
