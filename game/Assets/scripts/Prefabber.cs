@@ -31,7 +31,7 @@ public static class Prefabber
     static void InitPrefabs()
     {
         _map = new Dictionary<string, GameObject>();
-        GameObject[] prefabs = Resources.LoadAll<GameObject>("prefabs");
+        GameObject[] prefabs = Resources.LoadAll<GameObject>("prefabs/world");
         foreach (GameObject p in prefabs)
         {
             _map.Add(p.name, p);

@@ -16,6 +16,8 @@ public class Scorer
     // Events
     // public delegate void GoalScoredEventListener(Ball ball, Goal goal);
     // public static event GoalScoredEventListener GoalScored;
+    public delegate void ScoreUpdatedEventListener(int newScore);
+    public static event ScoreUpdatedEventListener ScoreUpdatedEvent;
 
     public Scorer()
     {
@@ -25,6 +27,7 @@ public class Scorer
     public void ScoreGoalWithBall(int goalPoints, int ballPoints)
     {
         _score += goalPoints * ballPoints;
-        MonoBehaviour.print(_score);
+        if (ScoreUpdatedEvent != null)
+            ScoreUpdatedEvent(_score);
     }
 }
