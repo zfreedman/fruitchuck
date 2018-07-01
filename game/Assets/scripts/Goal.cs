@@ -31,7 +31,8 @@ public class Goal : MonoBehaviour
     Ball BallFromCollision(Collision collision)
     {
         Ball ball = collision.gameObject.GetComponent<Ball>();
-        return ball;
+        // Check to make sure something didn't hit the ball before the user grabbed it
+        return ball.Grabbable ? null : ball;
     }
 
     void HandleCollisionEnter(Ball ball)

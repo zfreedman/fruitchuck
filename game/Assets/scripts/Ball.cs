@@ -74,5 +74,7 @@ public class Ball : MonoBehaviour
             _rigidbody.velocity = Vector3.zero;
             _rigidbody.angularVelocity = Vector3.zero;
         }
+
+        // gameObject.GetComponent<Collider>().enabled = usePhysics;
     }
 }

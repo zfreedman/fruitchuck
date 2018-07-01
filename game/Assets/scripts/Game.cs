@@ -71,7 +71,6 @@ public class Game : MonoBehaviour
 
     void InitBall()
     {
-        //_ball = GameObject.CreatePrimitive(PrimitiveType.Cube).AddComponent<Ball>();
         GameObject prefab = Prefabber.GetPrefab("Ball");
         _ball = Instantiate<GameObject>(
             prefab, Vector3.zero, prefab.transform.rotation
