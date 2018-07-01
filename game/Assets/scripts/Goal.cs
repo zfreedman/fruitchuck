@@ -5,6 +5,7 @@ using UnityEngine;
 public class Goal : MonoBehaviour
 {
     // Private members
+    int _goalLife = 1;
     int _pointsMultiplier = 1;
 
     // Accessor
@@ -25,7 +26,6 @@ public class Goal : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
     {
-		
 	}
 
     Ball BallFromCollision(Collision collision)
@@ -39,7 +39,11 @@ public class Goal : MonoBehaviour
     {
         if (ball && BallCollidedWithGoalEvent != null)
         {
-            BallCollidedWithGoalEvent(this, ball);
+            if (_goalLife > 0)
+            {
+                BallCollidedWithGoalEvent(this, ball);
+            }
+            UpdateGoalLife(-1);
         }
     }
 
@@ -49,5 +53,12 @@ public class Goal : MonoBehaviour
         HandleCollisionEnter(ball);
     }
 
-
+    void UpdateGoalLife(int delta)
+    {
+        _goalLife += delta;
+        if (_goalLife <= 0)
+        {
+            ;
+        }
+    }
 }

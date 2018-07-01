@@ -6,7 +6,7 @@ public class GoalHolder : MonoBehaviour
 {
     //Private members
     Vector3 _goalPosition;
-    [SerializeField] float _lifetime = 5.0f;
+    [SerializeField] float _lifetime = 7.0f;
     [SerializeField] float _maxSpeed = 5.0f;
     [SerializeField] float _minSpeed = 2.0f;
     Vector3 _moveDirection;

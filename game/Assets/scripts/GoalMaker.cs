@@ -95,7 +95,7 @@ public class GoalMaker : MonoBehaviour
             position = new Vector3(
                 Random.Range(-5, 5),
                 0,
-                Random.Range(3, 7)
+                Random.Range(0, 5)
             );
         }
         return position;
