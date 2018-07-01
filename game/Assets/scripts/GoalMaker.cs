@@ -5,23 +5,45 @@ using UnityEngine;
 public class GoalMaker : MonoBehaviour
 {
     // Private members
-    int _goalsMade;
+    int _goalsMadeCount;
     List<GameObject> _holderPrefabs;
+    Dictionary<string, GoalHolder> _holders;
+    [SerializeField] int _minTimeBetweenNewGoals = 2;
+    [SerializeField] int _maxTimeBetweenNewGoals = 5;
+    [SerializeField] float _timeBetweenNewGoals = 1;
 
-	// Use this for initialization
 	void Awake ()
     {
-        InitHolderPrefabs();
-	}
-	
-	// Update is called once per frame
-	void Update ()
+    }
+
+    // Use this for initialization
+    void Start()
     {
+        InitEventListeners();
+        InitHolderPrefabs();
+        InitHolders();
+    }
+
+    // Update is called once per frame
+    void Update ()
+    {
+        UpdateTimeBetweenNewGoals();
 	}
 
     Vector3 GetGoalPosition(GameObject holderPrefab)
     {
         return holderPrefab.GetComponent<GoalHolder>().GoalPosition;
+    }
+
+    void HandleGoalHolderLifetime0Event(string holderName)
+    {
+        Destroy(_holders[holderName].gameObject);
+        _holders.Remove(holderName);
+    }
+
+    void InitEventListeners()
+    {
+        GoalHolder.GoalHolderLifetime0Event += HandleGoalHolderLifetime0Event;
     }
 
     void InitHolderPrefabs()
@@ -31,35 +53,40 @@ public class GoalMaker : MonoBehaviour
         );
     }
 
-    public GoalHolder MakeGoalHolderController()
+    void InitHolders()
+    {
+        _holders = new Dictionary<string, GoalHolder>();
+    }
+
+    GoalHolder MakeGoalHolder()
     {
         Vector3 holderPosition = PickRandomHolderPosition();
         GameObject holderPrefab = PickRandomHolderPrefab();
         GoalHolder holder = Instantiate(
             holderPrefab, holderPosition, holderPrefab.transform.rotation
         ).GetComponent<GoalHolder>();
-        holder.name = "Holder " + _goalsMade;
+        holder.name = "Holder " + _goalsMadeCount;
 
         return holder;
     }
 
-    public Goal MakeGoal()
+    void MakeGoal()
     {
-        GoalHolder holder = MakeGoalHolderController();
+        GoalHolder holder = MakeGoalHolder();
+        _holders.Add(holder.name, holder);
 
         Vector3 goalPosition = GetGoalPosition(holder.gameObject);
         GameObject goalPrefab = Prefabber.GetPrefab("Goal");
         Goal goal = Instantiate(
             goalPrefab, holder.transform
         ).AddComponent<Goal>();
-        goal.name = "Goal " + _goalsMade;
+        goal.name = "Goal " + _goalsMadeCount;
         goal.transform.position = goalPosition;
 
-        _goalsMade++;
-        return goal;
+        _goalsMadeCount++;
     }
 
-    public Vector3 PickRandomHolderPosition()
+    Vector3 PickRandomHolderPosition()
     {
         Vector3 position = Vector3.forward * 10;
         // if (_goalsMade != 0)
@@ -74,8 +101,26 @@ public class GoalMaker : MonoBehaviour
         return position;
     }
 
-    public GameObject PickRandomHolderPrefab()
+    GameObject PickRandomHolderPrefab()
     {
         return _holderPrefabs[Random.Range(0, _holderPrefabs.Count)];
+    }
+
+    void ResetTimeBetweenNewGoals()
+    {
+        _timeBetweenNewGoals = Random.Range(
+            _minTimeBetweenNewGoals,
+            _maxTimeBetweenNewGoals
+        );
+    }
+
+    void UpdateTimeBetweenNewGoals()
+    {
+        _timeBetweenNewGoals -= Time.deltaTime;
+        if (_timeBetweenNewGoals < 0)
+        {
+            MakeGoal();
+            ResetTimeBetweenNewGoals();
+        }
     }
 }

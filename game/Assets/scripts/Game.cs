@@ -13,7 +13,7 @@ public class Game : MonoBehaviour
 
     private void Awake()
     {
-        AddEventListeners();
+        InitEventListeners();
         InitPhysics();
     }
 
@@ -32,29 +32,15 @@ public class Game : MonoBehaviour
 		
 	}
 
-    void AddEventListeners()
-    {
-        Ball.BallDeadEvent += HandleBallDeadEvent;
-        Goal.BallCollidedWithGoalEvent += HandleBallCollidedWithGoalEvent;
-        Player.ShotEvent += HandleShotEvent;
-    }
-
     void DestroyOldBall()
     {
         if (_ball)
             Destroy(_ball.gameObject);
     }
 
-    void DestroyOldGoal()
-    {
-        if (_goal)
-            Destroy(_goal.gameObject);
-    }
-
     void HandleBallCollidedWithGoalEvent(Goal goal, Ball ball)
     {
         ScoreBall(goal, ball);
-        MakeNewGoal();
     }
 
     void HandleBallDeadEvent()
@@ -77,10 +63,16 @@ public class Game : MonoBehaviour
         ).GetComponent<Ball>();
     }
 
+    void InitEventListeners()
+    {
+        Ball.BallDeadEvent += HandleBallDeadEvent;
+        Goal.BallCollidedWithGoalEvent += HandleBallCollidedWithGoalEvent;
+        Player.ShotEvent += HandleShotEvent;
+    }
+
     void InitGoalMaker()
     {
         _goalMaker = gameObject.AddComponent<GoalMaker>();
-        MakeNewGoal();
     }
 
     void InitPhysics()
@@ -96,12 +88,6 @@ public class Game : MonoBehaviour
     void InitScorer()
     {
         _scorer = new Scorer();
-    }
-
-    void MakeNewGoal()
-    {
-        DestroyOldGoal();
-        _goal = _goalMaker.MakeGoal();
     }
 
     void ScoreBall(Goal goal, Ball ball)

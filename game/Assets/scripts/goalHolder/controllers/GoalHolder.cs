@@ -6,6 +6,7 @@ public class GoalHolder : MonoBehaviour
 {
     //Private members
     Vector3 _goalPosition;
+    [SerializeField] float _lifetime = 5.0f;
     [SerializeField] float _maxSpeed = 5.0f;
     [SerializeField] float _minSpeed = 2.0f;
     Vector3 _moveDirection;
@@ -16,6 +17,10 @@ public class GoalHolder : MonoBehaviour
     {
         get { return _goalPosition; }
     }
+
+    // Events
+    public delegate void GoalHolderLifetime0EventListener(string holderName);
+    public static event GoalHolderLifetime0EventListener GoalHolderLifetime0Event;
 
     private void Awake()
     {
@@ -32,7 +37,8 @@ public class GoalHolder : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
     {
-        transform.Translate(transform.forward * _speed * Time.deltaTime);
+        Move();
+        UpdateLifetime();
 	}
 
     void InitGoalPosition()
@@ -57,5 +63,19 @@ public class GoalHolder : MonoBehaviour
     void InitMoveDirection()
     {
         _moveDirection = Camera.main.transform.forward;
+    }
+
+    void Move()
+    {
+        transform.Translate(transform.forward * _speed * Time.deltaTime);
+    }
+
+    void UpdateLifetime()
+    {
+        _lifetime -= Time.deltaTime;
+        if (_lifetime < 0 && GoalHolderLifetime0Event != null)
+        {
+            GoalHolderLifetime0Event(name);
+        }
     }
 }
