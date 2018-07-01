@@ -5,15 +5,21 @@ using UnityEngine;
 public class Game : MonoBehaviour
 {
     // Private members
-    Player _player;
     Ball _ball;
     Goal _goal;
+    Player _player;
+    Prefabber _prefabber;
 
-	// Use this for initialization
-	void Start ()
+    private void Awake()
     {
         AddEventListeners();
         InitPhysics();
+        InitPrefabber();
+    }
+
+    // Use this for initialization
+    void Start ()
+    {
         InitPlayer();
         InitGoal();
         InitBall();
@@ -52,12 +58,24 @@ public class Game : MonoBehaviour
 
     void InitBall()
     {
-        _ball = GameObject.CreatePrimitive(PrimitiveType.Cube).AddComponent<Ball>();
+        //_ball = GameObject.CreatePrimitive(PrimitiveType.Cube).AddComponent<Ball>();
+        GameObject prefab = _prefabber.GetPrefab("Ball");
+        _ball = Instantiate<GameObject>(
+            prefab, Vector3.zero, prefab.transform.rotation
+        ).AddComponent<Ball>();
     }
 
     void InitGoal()
     {
-        _goal = GameObject.CreatePrimitive(PrimitiveType.Cube).AddComponent<Goal>();
+        GameObject prefab = _prefabber.GetPrefab("Goal");
+        _goal = Instantiate<GameObject>(
+            prefab, Vector3.zero, prefab.transform.rotation
+        ).AddComponent<Goal>();
+    }
+
+    void InitPhysics()
+    {
+        Physics.gravity = Vector3.down * 20;
     }
 
     void InitPlayer()
@@ -65,8 +83,8 @@ public class Game : MonoBehaviour
         _player = gameObject.AddComponent<Player>();
     }
 
-    void InitPhysics()
+    void InitPrefabber()
     {
-        Physics.gravity = Vector3.down * 10;
+        _prefabber = gameObject.AddComponent<Prefabber>();
     }
 }

@@ -54,7 +54,7 @@ public class Ball : MonoBehaviour
         _rigidbody.useGravity = true;
         _rigidbody.AddForce(
             new Vector3(
-                mouseChange.x, mouseChange.y, mouseChange.y
+                mouseChange.x, mouseChange.y, mouseChange.y * 3.0f
             ) * _forceScale
         );
     }
