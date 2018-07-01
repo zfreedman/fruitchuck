@@ -5,6 +5,13 @@ using UnityEngine;
 public class Goal : MonoBehaviour
 {
     // Private members
+    int _pointsMultiplier = 1;
+
+    // Accessor
+    public int PointsMultiplier
+    {
+        get { return _pointsMultiplier; }
+    }
 
     // Events
     public delegate void BallCollidedWithGoalEventListener(Goal goal, Ball ball);
@@ -13,8 +20,6 @@ public class Goal : MonoBehaviour
 	// Use this for initialization
 	void Start ()
     {
-        name = "Goal";
-        PlaceGoal();
 	}
 	
 	// Update is called once per frame
@@ -35,11 +40,6 @@ public class Goal : MonoBehaviour
         {
             BallCollidedWithGoalEvent(this, ball);
         }
-    }
-
-    void PlaceGoal()
-    {
-        transform.position = Vector3.forward * 10;
     }
 
     void OnCollisionEnter(Collision collision)

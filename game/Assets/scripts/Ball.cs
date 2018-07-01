@@ -7,6 +7,7 @@ public class Ball : MonoBehaviour
     // Private members
     float _forceScale;
     bool _grabbable;
+    [SerializeField]int _pointsMultiplier;
     Rigidbody _rigidbody;
     bool _useGravity;
 
@@ -14,6 +15,11 @@ public class Ball : MonoBehaviour
     public bool Grabbable
     {
         get { return _grabbable; }
+    }
+
+    public int PointsMultiplier
+    {
+        get { return _pointsMultiplier; }
     }
 
     // Events

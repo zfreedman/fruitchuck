@@ -2,29 +2,23 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Prefabber : MonoBehaviour
+public static class Prefabber
 {
     // Private members
-    Dictionary<string, GameObject> _map;
+    static Dictionary<string, GameObject> _map;
 
-	// Use this for initialization
-	void Awake ()
+    static Prefabber()
     {
+        _map = new Dictionary<string, GameObject>();
         InitPrefabs();
-	}
-	
-	// Update is called once per frame
-	void Update ()
-    {
-		
-	}
+    }
 
-    public GameObject GetPrefab(string key)
+    public static GameObject GetPrefab(string key)
     {
         return _map.ContainsKey(key) ? _map[key] : null;
     }
 
-    public List<GameObject> GetPrefabs(List<string> keyList)
+    public static List<GameObject> GetPrefabs(List<string> keyList)
     {
         List<GameObject> prefabs = new List<GameObject>();
         for (int i = 0; i < keyList.Count; ++i)
@@ -34,7 +28,7 @@ public class Prefabber : MonoBehaviour
         return prefabs;
     }
 
-    void InitPrefabs()
+    static void InitPrefabs()
     {
         _map = new Dictionary<string, GameObject>();
         GameObject[] prefabs = Resources.LoadAll<GameObject>("prefabs");

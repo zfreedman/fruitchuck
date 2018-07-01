@@ -7,21 +7,22 @@ public class Game : MonoBehaviour
     // Private members
     Ball _ball;
     Goal _goal;
+    GoalMaker _goalMaker;
     Player _player;
-    Prefabber _prefabber;
+    Scorer _scorer;
 
     private void Awake()
     {
         AddEventListeners();
         InitPhysics();
-        InitPrefabber();
     }
 
     // Use this for initialization
     void Start ()
     {
+        InitScorer();
         InitPlayer();
-        InitGoal();
+        InitGoalMaker();
         InitBall();
 	}
 	
@@ -44,10 +45,16 @@ public class Game : MonoBehaviour
             Destroy(_ball.gameObject);
     }
 
+    void DestroyOldGoal()
+    {
+        if (_goal)
+            Destroy(_goal.gameObject);
+    }
+
     void HandleBallCollidedWithGoalEvent(Goal goal, Ball ball)
     {
-        ScoreBall();
-
+        ScoreBall(goal, ball);
+        MakeNewGoal();
     }
 
     void HandleBallDeadEvent()
@@ -65,23 +72,21 @@ public class Game : MonoBehaviour
     void InitBall()
     {
         //_ball = GameObject.CreatePrimitive(PrimitiveType.Cube).AddComponent<Ball>();
-        GameObject prefab = _prefabber.GetPrefab("Ball");
+        GameObject prefab = Prefabber.GetPrefab("Ball");
         _ball = Instantiate<GameObject>(
             prefab, Vector3.zero, prefab.transform.rotation
-        ).AddComponent<Ball>();
+        ).GetComponent<Ball>();
     }
 
-    void InitGoal()
+    void InitGoalMaker()
     {
-        GameObject prefab = _prefabber.GetPrefab("Goal");
-        _goal = Instantiate<GameObject>(
-            prefab, Vector3.zero, prefab.transform.rotation
-        ).AddComponent<Goal>();
+        _goalMaker = gameObject.AddComponent<GoalMaker>();
+        MakeNewGoal();
     }
 
     void InitPhysics()
     {
-        Physics.gravity = Vector3.down * 20;
+        Physics.gravity = Vector3.down * 30;
     }
 
     void InitPlayer()
@@ -89,13 +94,20 @@ public class Game : MonoBehaviour
         _player = gameObject.AddComponent<Player>();
     }
 
-    void InitPrefabber()
+    void InitScorer()
     {
-        _prefabber = gameObject.AddComponent<Prefabber>();
+        _scorer = new Scorer();
     }
 
-    void ScoreBall()
+    void MakeNewGoal()
+    {
+        DestroyOldGoal();
+        _goal = _goalMaker.MakeGoal();
+    }
+
+    void ScoreBall(Goal goal, Ball ball)
     {
         HandleBallDeadEvent();
+        _scorer.ScoreGoalWithBall(goal.PointsMultiplier, ball.PointsMultiplier);
     }
 }

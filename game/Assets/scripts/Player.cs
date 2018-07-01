@@ -56,7 +56,7 @@ public class Player : MonoBehaviour
         if (Physics.Raycast(ray, out hit))
         {
             Ball ball = hit.transform.GetComponent<Ball>();
-            if (ball.Grabbable)
+            if (ball && ball.Grabbable)
             {
                 ball.DisableGrab();
                 _ball = ball;
